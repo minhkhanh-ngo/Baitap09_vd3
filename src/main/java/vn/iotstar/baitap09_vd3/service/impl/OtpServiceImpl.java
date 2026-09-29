@@ -26,7 +26,8 @@ public class OtpServiceImpl implements OtpService {
     }
 
     private void send(String email, String type, String subject) {
-        repository.deleteByEmailAndType(email, type);
+        repository.deleteAllByEmailAndType(email, type);
+        repository.flush();
         String otp = generateOtp();
         OtpToken token = OtpToken.builder()
             .email(email)

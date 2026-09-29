@@ -1,26 +1,81 @@
-<!DOCTYPE html>
+<!doctype html>
+
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layouts/layout :: head ('Dashboard')}"></head>
-<body>
-<div th:replace="~{layouts/layout :: page (~{::main})}">
-    <main>
-        <h1>Dashboard</h1>
-        <div th:if="${success}" class="alert success" th:text="${success}"></div>
-        <div class="cards">
-            <div class="card">
-                <h3>Total Users</h3>
-                <strong th:text="${userCount}">0</strong>
-            </div>
-            <div class="card">
-                <h3>Total Products</h3>
-                <strong th:text="${productCount}">0</strong>
-            </div>
+  <head th:replace="~{layouts/layout :: head ('Dashboard')}"></head>
+  <body>
+    <div th:replace="~{layouts/layout :: page (~{::main})}">
+      <main>
+        <div class="dashboard-heading">
+          <div>
+            <span class="page-eyebrow">IOTSTAR SHOP</span>
+            <h1>Dashboard</h1>
+            <p>Chào mừng bạn đến với hệ thống quản lý cửa hàng.</p>
+          </div>
         </div>
-        <div class="quick-links">
-            <a class="button" th:href="@{/products}">Quản lý Products</a>
-            <a class="button" th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:href="@{/users}">Quản lý Users</a>
+
+        <div
+          th:if="${success}"
+          class="alert success"
+          th:text="${success}"
+        ></div>
+
+        <div class="dashboard-cards">
+          <div class="dashboard-card">
+            <div class="dashboard-card-top">
+              <span class="dashboard-card-label">TOTAL USERS</span>
+              <span class="dashboard-card-badge">Users</span>
+            </div>
+
+            <strong th:text="${userCount}">0</strong>
+
+            <p>Tổng số tài khoản trong hệ thống</p>
+          </div>
+
+          <div class="dashboard-card">
+            <div class="dashboard-card-top">
+              <span class="dashboard-card-label">TOTAL PRODUCTS</span>
+              <span class="dashboard-card-badge">Products</span>
+            </div>
+
+            <strong th:text="${productCount}">0</strong>
+
+            <p>Tổng số sản phẩm hiện có</p>
+          </div>
         </div>
-    </main>
-</div>
-</body>
+
+        <div class="dashboard-section">
+          <div class="section-heading">
+            <div>
+              <h2>Quản lý hệ thống</h2>
+              <p>Truy cập nhanh đến các chức năng quản lý.</p>
+            </div>
+          </div>
+
+          <div class="dashboard-actions">
+            <a class="dashboard-action" th:href="@{/products}">
+              <div class="dashboard-action-content">
+                <strong>Quản lý Products</strong>
+                <span>Xem và quản lý danh sách sản phẩm</span>
+              </div>
+
+              <span class="dashboard-action-arrow">→</span>
+            </a>
+
+            <a
+              class="dashboard-action"
+              th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
+              th:href="@{/users}"
+            >
+              <div class="dashboard-action-content">
+                <strong>Quản lý Users</strong>
+                <span>Quản lý tài khoản và phân quyền</span>
+              </div>
+
+              <span class="dashboard-action-arrow">→</span>
+            </a>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
 </html>

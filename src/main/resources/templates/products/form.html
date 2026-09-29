@@ -1,50 +1,131 @@
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layouts/layout :: head(${mode == 'create' ? 'Thêm Product' : 'Sửa Product'})}"></head>
 <body>
 <div th:replace="~{layouts/layout :: page (~{::main})}">
     <main>
-        <h1 th:text="${mode == 'create' ? 'Thêm Product' : 'Sửa Product'}"></h1>
-        <form th:object="${productDTO}" 
-              th:with="actionUrl=${mode == 'create' ? '/products/create' : '/products/edit/' + productDTO.id}" 
-              enctype="multipart/form-data" 
-              th:action="${actionUrl}" method="post" accept-charset="UTF-8">
-            
+
+    <div class="page-heading">
+        <div>
+            <span class="page-eyebrow">PRODUCT MANAGEMENT</span>
+            <h1 th:text="${mode == 'create' ? 'Thêm Product' : 'Sửa Product'}"></h1>
+            <p class="page-description">
+                Nhập đầy đủ thông tin sản phẩm bên dưới.
+            </p>
+        </div>
+    </div>
+
+    <div class="product-form-card">
+        <form th:object="${productDTO}"
+              th:with="actionUrl=${mode == 'create' ? '/products/create' : '/products/edit/' + productDTO.id}"
+              enctype="multipart/form-data"
+              th:action="${actionUrl}"
+              method="post"
+              accept-charset="UTF-8">
+
             <input type="hidden" th:field="*{id}">
-            
-            <div>
-                <label for="name"> Tên sản phẩm </label> 
-                <input type="text" th:field="*{name}" id="name"> 
-                <small class="error-text" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
+
+            <div class="form-section">
+                <div class="form-section-title">
+                    <h2>Thông tin sản phẩm</h2>
+                    <p>Cung cấp thông tin cơ bản của sản phẩm.</p>
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="name">Tên sản phẩm</label>
+                        <input
+                            type="text"
+                            th:field="*{name}"
+                            id="name"
+                            placeholder="Nhập tên sản phẩm">
+                        <small
+                            class="error-text"
+                            th:if="${#fields.hasErrors('name')}"
+                            th:errors="*{name}">
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">Giá</label>
+                        <input
+                            id="price"
+                            type="number"
+                            step="0.01"
+                            th:field="*{price}"
+                            placeholder="Nhập giá sản phẩm">
+                        <small
+                            class="error-text"
+                            th:if="${#fields.hasErrors('price')}"
+                            th:errors="*{price}">
+                        </small>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Mô tả</label>
+                    <textarea
+                        id="description"
+                        th:field="*{description}"
+                        rows="6"
+                        placeholder="Nhập mô tả sản phẩm...">
+                    </textarea>
+                </div>
             </div>
-            
-            <div>
-                <label for="description"> Mô tả </label>
-                <textarea id="description" th:field="*{description}" rows="5"></textarea>
+
+            <div class="form-section">
+                <div class="form-section-title">
+                    <h2>Hình ảnh sản phẩm</h2>
+                    <p>Chọn hình ảnh đại diện cho sản phẩm.</p>
+                </div>
+
+                <div class="image-upload-box">
+
+                    <div class="form-group">
+                        <label for="image">Ảnh sản phẩm</label>
+                        <input
+                            id="image"
+                            type="file"
+                            name="image"
+                            accept="image/*">
+                    </div>
+
+                    <div
+                        class="current-image"
+                        th:if="${productDTO.imageUrl != null}">
+
+                        <span class="current-image-label">Ảnh hiện tại</span>
+
+                        <img
+                            th:src="${#strings.substringBefore(productDTO.imageUrl, '|')}"
+                            class="preview">
+                    </div>
+
+                </div>
             </div>
-            
-            <div>
-                <label for="price"> Giá </label> 
-                <input id="price" type="number" step="0.01" th:field="*{price}"> 
-                <small class="error-text" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></small>
+
+            <div class="form-actions">
+                <a
+                    class="button secondary"
+                    th:href="@{/products}">
+                    Hủy
+                </a>
+
+                <button
+                    type="submit"
+                    class="button">
+                    Lưu sản phẩm
+                </button>
             </div>
-            
-            <div>
-                <label for="image"> Ảnh </label> 
-                <input id="image" type="file" name="image" accept="image/*">
-            </div>
-            
-            <div th:if="${productDTO.imageUrl != null}">
-                <img th:src="${#strings.substringBefore(productDTO.imageUrl, '|')}" class="preview">
-            </div>
-            
-            <!-- Button -->
-            <div>
-                <button type="submit" class="button">Lưu</button>
-                <a class="button secondary" th:href="@{/products}">Hủy</a>
-            </div>
+
         </form>
-    </main>
+    </div>
+
+</main>
+
 </div>
 </body>
 </html>

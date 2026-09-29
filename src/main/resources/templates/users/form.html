@@ -1,37 +1,143 @@
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layouts/layout :: head(${mode == 'create' ? 'Thêm User' : 'Sửa User'})}"></head>
 <body>
 <div th:replace="~{layouts/layout :: page (~{::main})}">
     <main>
-        <form th:object="${userDTO}" method="post" enctype="multipart/form-data" accept-charset="UTF-8" th:action="${mode == 'create'} ? @{/users/create} : @{/users/edit/{id}(id=${userDTO.id})}">
+
+    <div class="page-heading">
+        <div>
+            <span class="page-eyebrow">USER MANAGEMENT</span>
             <h1 th:text="${mode == 'create' ? 'Thêm User' : 'Sửa User'}"></h1>
-            
-            <label>Username</label>
-            <input th:field="*{username}">
-            <small class="error-text" th:errors="*{username}"></small>
-            
-            <label>Email</label>
-            <input type="email" th:field="*{email}">
-            <small class="error-text" th:errors="*{email}"></small>
-            
-            <label>Họ tên</label>
-            <input th:field="*{fullName}">
-            <small class="error-text" th:errors="*{fullName}"></small>
-            
-            <label>Role</label>
-            <select th:field="*{roleName}">
-                <option value="ROLE_USER">USER</option>
-                <option value="ROLE_ADMIN">ADMIN</option>
-            </select>
-            
-            <label><input type="checkbox" th:field="*{enabled}"> Enabled</label>
-            
-            <button class="button">Lưu</button>
-            <a class="button secondary" th:href="@{/users}">Hủy</a>
+            <p class="page-description">
+                Quản lý thông tin và quyền truy cập của người dùng.
+            </p>
+        </div>
+    </div>
+
+    <div class="user-form-card">
+
+        <form
+            th:object="${userDTO}"
+            method="post"
+            enctype="multipart/form-data"
+            accept-charset="UTF-8"
+            th:action="${mode == 'create'} ? @{/users/create} : @{/users/edit/{id}(id=${userDTO.id})}">
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+                    <h2>Thông tin tài khoản</h2>
+                    <p>Nhập thông tin cơ bản của người dùng.</p>
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input
+                            id="username"
+                            th:field="*{username}"
+                            placeholder="Nhập username">
+                        <small
+                            class="error-text"
+                            th:errors="*{username}">
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input
+                            id="email"
+                            type="email"
+                            th:field="*{email}"
+                            placeholder="Nhập email">
+                        <small
+                            class="error-text"
+                            th:errors="*{email}">
+                        </small>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="fullName">Họ tên</label>
+                    <input
+                        id="fullName"
+                        th:field="*{fullName}"
+                        placeholder="Nhập họ tên">
+                    <small
+                        class="error-text"
+                        th:errors="*{fullName}">
+                    </small>
+                </div>
+
+            </div>
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+                    <h2>Phân quyền</h2>
+                    <p>Thiết lập vai trò và trạng thái tài khoản.</p>
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="roleName">Role</label>
+                        <select id="roleName" th:field="*{roleName}">
+                            <option value="ROLE_USER">USER</option>
+                            <option value="ROLE_ADMIN">ADMIN</option>
+                        </select>
+                    </div>
+
+                    <div class="enabled-box">
+                        <label class="checkbox-label">
+                            <input type="checkbox" th:field="*{enabled}">
+                            <span class="checkbox-text">
+                                <strong>Enabled</strong>
+                                <small>Cho phép tài khoản hoạt động</small>
+                            </span>
+                        </label>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="form-actions">
+                <a
+                    class="button secondary"
+                    th:href="@{/users}">
+                    Hủy
+                </a>
+
+                <button
+                    class="button"
+                    type="submit">
+                    Lưu
+                </button>
+            </div>
+
         </form>
-        <p th:if="${mode == 'create'}" class="note">Mật khẩu mặc định của user do Admin tạo: <b>123456</b>.</p>
-    </main>
+
+    </div>
+
+    <div
+        th:if="${mode == 'create'}"
+        class="note user-note">
+
+        <span class="note-title">Thông tin mật khẩu</span>
+        <span>
+            Mật khẩu mặc định của user do Admin tạo:
+            <b>123456</b>
+        </span>
+
+    </div>
+
+</main>
+
 </div>
 </body>
 </html>

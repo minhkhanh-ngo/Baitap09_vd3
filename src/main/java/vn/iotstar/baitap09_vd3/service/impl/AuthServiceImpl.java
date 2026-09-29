@@ -20,18 +20,28 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final OtpService otpService;
 
-    @Override @Transactional
+    @Override
+    @Transactional
     public void register(RegisterDTO dto) {
-        if (userRepository.existsByUsername(dto.getUsername()))
+        if (userRepository.existsByUsername(dto.getUsername())) {
             throw new IllegalArgumentException("Username đã tồn tại");
-        if (userRepository.existsByEmail(dto.getEmail()))
+        }
+
+        if (userRepository.existsByEmail(dto.getEmail())) {
             throw new IllegalArgumentException("Email đã tồn tại");
-        if (!dto.getPassword().equals(dto.getConfirmPassword()))
+        }
+
+        if (!dto.getPassword().equals(dto.getConfirmPassword())) {
             throw new IllegalArgumentException("Mật khẩu xác nhận không đúng");
-            
-        Role role = roleRepository.findByName("ROLE_USER")
-            .orElseThrow(() -> new IllegalStateException("Chưa có ROLE_USER"));
-            
+        }
+
+        Role role = roleRepository.findAll()
+            .stream()
+            .filter(r -> r.getName() != null)
+            .filter(r -> r.getName().trim().equalsIgnoreCase("ROLE_USER"))
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("Không tìm thấy ROLE_USER trong database"));
+
         User user = User.builder()
             .username(dto.getUsername())
             .email(dto.getEmail())
@@ -40,11 +50,11 @@ public class AuthServiceImpl implements AuthService {
             .enabled(false)
             .role(role)
             .build();
-            
+
         userRepository.save(user);
+
         otpService.sendRegisterOtp(dto.getEmail());
     }
-
     @Override @Transactional
     public boolean verifyRegister(String email, String otp) {
         boolean ok = otpService.verifyRegisterOtp(email, otp);
