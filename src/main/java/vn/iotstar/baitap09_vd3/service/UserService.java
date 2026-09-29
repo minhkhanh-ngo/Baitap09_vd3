@@ -1,5 +1,14 @@
-package vn.iotstar.baitap09_vd3.security;
+package vn.iotstar.baitap09_vd3.service;
 
-public class UserService {
+import org.springframework.data.domain.Page;
+import vn.iotstar.baitap09_vd3.dto.UserDTO;
 
+public interface UserService {
+    Page<UserDTO> findAll(String keyword, int page, int size);
+    UserDTO findById(Long id);
+    UserDTO create(UserDTO dto);
+    UserDTO update(Long id, UserDTO dto);
+    void delete(Long id);
+    long countUsers();
+    long countProducts(Long userId);
 }

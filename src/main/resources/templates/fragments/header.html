@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="header" class="header">
+    <div class="header-left">
+        <a th:href="@{/}" class="brand">IOTSTAR SHOP</a>
+        <nav>
+            <a th:href="@{/}">Dashboard</a>
+            <a th:href="@{/products}">Products</a>
+            <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:href="@{/users}">Users</a>
+        </nav>
+    </div>
+    
+    <div class="account" th:if="${#authorization.expression('isAuthenticated()')}">
+        <span th:text="${#authentication.name}"></span>
+        <form th:action="@{/logout}" method="post" style="display: inline; margin: 0;">
+            <button type="submit" class="link-button">Logout</button>
+        </form>
+    </div>
+    
+    <div class="account" th:unless="${#authorization.expression('isAuthenticated()')}">
+        <a th:href="@{/login}" class="button">Login</a>
+    </div>
+</header>
+</body>
+</html>

@@ -1,5 +1,8 @@
 package vn.iotstar.baitap09_vd3.service;
 
-public class CloudinaryService {
+import org.springframework.web.multipart.MultipartFile;
 
+public interface CloudinaryService {
+    CloudinaryUploadResult upload(MultipartFile file);
+    void delete(String publicId);
 }

@@ -1,5 +1,3 @@
 package vn.iotstar.baitap09_vd3.service;
 
-public class CloudinaryUploadResult {
-
-}
+public record CloudinaryUploadResult(String url, String publicId) {}
